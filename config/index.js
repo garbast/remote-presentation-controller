@@ -5,17 +5,21 @@ var config = {
 			id: 'demo',  // id for each presentation, currently same as the url
 			title : 'Demo Presentation',
 			indexh : 0,  // initial slide horizontal index
-			indexv : 0,  // initial slide veriticlal index
+			indexv : 0  // initial slide vertical index
 		},
 		'myppt' : { // powerpoint presentation
-			id: 'myppt', 
+			id: 'myppt',
 			title : 'My Presentation',
 			indexh : 0,  // initial slide horizontal index
-			indexv : 0,  // initial slide veriticlal index
+			indexv : 0  // initial slide vertical index
+		},
+		'commerce_eap' : { // powerpoint presentation
+			id: 'commerce_eap',
+			title : 'EXT:commerce EAP',
+			indexh : 0,  // initial slide horizontal index
+			indexv : 0  // initial slide vertical index
 		}
-		
 	}
-
 };
 
 exports.config = config;
