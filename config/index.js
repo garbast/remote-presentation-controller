@@ -1,23 +1,24 @@
 var config = {
 	// store default list of presentations
-	presentations : {
-		'demo' : { // demo presentation
+	presentations: {
+		'demo': { // demo presentation
 			id: 'demo',  // id for each presentation, currently same as the url
-			title : 'Demo Presentation',
-			indexh : 0,  // initial slide horizontal index
-			indexv : 0  // initial slide vertical index
+			title: 'Demo Presentation',
+			indexh: 0,  // initial slide horizontal index
+			indexv: 0  // initial slide vertical index
 		},
-		'myppt' : { // powerpoint presentation
+		'myppt': { // powerpoint presentation
 			id: 'myppt',
-			title : 'My Presentation',
-			indexh : 0,  // initial slide horizontal index
-			indexv : 0  // initial slide vertical index
+			title: 'My Presentation',
+			indexh: 0,  // initial slide horizontal index
+			indexv: 0  // initial slide vertical index
 		},
-		'commerce_eap' : { // powerpoint presentation
+		'commerce_eap': { // powerpoint presentation
 			id: 'commerce_eap',
-			title : 'EXT:commerce EAP',
-			indexh : 0,  // initial slide horizontal index
-			indexv : 0  // initial slide vertical index
+			title: 'EXT:commerce EAP',
+			theme: 'evoweb',
+			indexh: 0,  // initial slide horizontal index
+			indexv: 0  // initial slide vertical index
 		}
 	}
 };
