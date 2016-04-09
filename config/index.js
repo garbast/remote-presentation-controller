@@ -7,16 +7,18 @@ var config = {
 			indexh: 0,  // initial slide horizontal index
 			indexv: 0  // initial slide vertical index
 		},
+
 		'myppt': { // powerpoint presentation
 			id: 'myppt',
 			title: 'My Presentation',
 			indexh: 0,  // initial slide horizontal index
 			indexv: 0  // initial slide vertical index
 		},
+
 		'commerce_eap': { // powerpoint presentation
 			id: 'commerce_eap',
 			title: 'EXT:commerce EAP',
-			//theme: 'css/evoweb',
+			theme: 'css/evoweb',
 			indexh: 0,  // initial slide horizontal index
 			indexv: 0  // initial slide vertical index
 		}

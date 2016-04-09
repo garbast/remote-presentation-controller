@@ -1,61 +1,78 @@
 // store list of presentations which include what is the title and its current slide
 // default to 2 presentations, demo & my presentation
 // the list is loaded from config file under config/index.js
-var presentations = {};
 
-exports.setupRemotePresenter = function (app, io, config) {
-	// load initial presentation list from config file
-	presentations = config.presentations;
-
+/**
+ * Add presentations and controller to path mapping
+ *
+ * @param {object} presentations
+ * @param {object} app
+ */
+function addRoutes(presentations, app) {
 	// add presentations to routing
 	var presentationConfig = {};
 	for (var presentation in presentations) {
 		if (presentations.hasOwnProperty(presentation)) {
 			presentationConfig = presentations[presentation];
 
-			app.get(
-				'/' + presentationConfig['id'],
-				function (config) {
-					return function (request, response) {
-						function getThemePath(config) {
-							var theme = (config['theme'] || 'black') + '.css';
+			app.get('/' + presentationConfig['id'], function (config) {
+				return function (request, response) {
+					function getThemePath(config) {
+						var theme = (config['theme'] || 'black') + '.css';
 
-							if (theme.indexOf('/') < 0) {
-								theme = 'reveal.js/css/theme/' + theme;
-							}
-
-							return theme;
+						if (theme.indexOf('/') < 0) {
+							theme = 'reveal.js/css/theme/' + theme;
 						}
 
-						response.render(
-							config['id'],
-							{
-								presentationId: config['id'],
-								title: config['title'],
-								theme: getThemePath(config)
-							}
-						);
+						return theme;
 					}
-				}(presentationConfig)
-			);
+
+					response.render(
+						config['id'],
+						{
+							layout: (config['layout'] || '../layouts/presentation'),
+							title: config['title'],
+							presentationId: config['id'],
+							theme: getThemePath(config)
+						}
+					);
+				}
+			}(presentationConfig));
 		}
 	}
 
-	// always add the controller
-	app.get('/controller', function (request, res) {
-		res.render(
+	// add the remote controller
+	app.get('/controller', function (request, response) {
+		response.render(
 			'controller',
 			{
+				layout: '../layouts/controller',
 				title: 'Remote Presentation Controller',
-				layout: "controller_layout",
 				presentations: presentations
 			}
 		);
 	});
 
+	// add index
+	app.get('/', function (request, response) {
+		response.render(
+			'index',
+			{
+				layout: '../layouts/controller',
+				title: 'Overview'
+			}
+		);
+	});
+}
 
-	// setup remote control here
-	// socket.io setup
+/**
+ * setup remote control here
+ * socket.io setup
+ *
+ * @param {object} presentations
+ * @param {object} io
+ */
+function setupRemoteController(presentations, io) {
 	io.sockets.on('connection', function (socket) {
 		// once connected need to broadcast the cur slide data
 		socket.on('request_presentation', function (data) {
@@ -68,7 +85,7 @@ exports.setupRemotePresenter = function (app, io, config) {
 		// send commands to make slide go previous/ next/etc
 		// this should be triggered from the remote controller
 		socket.on('command', function (command) {
-			console.log("receive command " + JSON.stringify(command));
+			console.log('receive command ' + JSON.stringify(command));
 			// TODO: future might need a way to tell how many slides there are
 			// presentation id
 			var presentationId = command['id'];
@@ -106,4 +123,14 @@ exports.setupRemotePresenter = function (app, io, config) {
 			}
 		});
 	});
+}
+
+/**
+ * @param {object} app
+ * @param {object} io
+ * @param {object} config
+ */
+exports.setupRemotePresenter = function (app, io, config) {
+	addRoutes(config.presentations, app);
+	setupRemoteController(config.presentations, io);
 };
