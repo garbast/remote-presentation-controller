@@ -1,0 +1,44 @@
+<div id="mainController">
+	<div id="mycontrols" align="center">
+
+		<div id="fullScreenButton">Fullscreen</div>
+
+		<div id="presentationSelector">
+			<label for="whichPresentation">Please choose presentation:</label><br/>
+			<select id="whichPresentation">
+				<%
+				for (var presentation in presentations) {
+					if (presentations.hasOwnProperty(presentation)) {
+						var config = presentations[presentation];
+				%>
+					<option value="<%= config['id'] %>"><%= config['title'] %></option>
+				<%
+					}
+				}
+				%>
+			</select>
+		</div>
+
+		<table>
+			<tr>
+				<td></td>
+				<td><img class="ctl_btn up" data-command="up" src="/images/arrow_up.png"/></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><img class="ctl_btn left" data-command="left" src="/images/arrow_left.png"/></td>
+				<td></td>
+				<td><img class="ctl_btn right" data-command="right" src="/images/arrow_right.png"/></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><img class="ctl_btn down" data-command="down" src="/images/arrow_down.png"/></td>
+				<td></td>
+			</tr>
+		</table>
+
+	</div>
+</div>
+
+<script src="/reveal.js/lib/js/head.min.js"></script>
+<script src="/js/controller.js"></script>

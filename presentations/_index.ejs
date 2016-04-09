@@ -1,0 +1,14 @@
+<div id="mainController">
+	<ul>
+	<%
+	for (var presentation in presentations) {
+		if (presentations.hasOwnProperty(presentation)) {
+			var config = presentations[presentation];
+	%>
+		<li><a href="<%= config['id'] %>"><%= config['title'] %></a></li>
+	<%
+		}
+	}
+	%>
+	</ul>
+</div>

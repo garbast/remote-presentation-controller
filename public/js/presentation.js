@@ -14,7 +14,7 @@ function hideMenuButtonOutsideSpeakerDeck() {
 // Full list of configuration options available at:
 // https://github.com/hakimel/reveal.js#configuration
 Reveal.initialize({
-	controls: true,
+	controls: false,
 	progress: true,
 	history: true,
 	center: true,
@@ -33,4 +33,35 @@ Reveal.initialize({
 		// optional js not provided by reveal.js
 		{ src: 'js/reveal.js-menu/menu.js', async: true, callback: hideMenuButtonOutsideSpeakerDeck }
 	]
+});
+
+head.js('/socket.io/socket.io.js', function() {
+	// connect
+	var socket = io.connect('/');
+
+	socket.on('connect', function () {
+		console.log('client connected. Sending current slide request');
+
+		// on connect send presentation request
+		socket.emit('request_presentation', {'id': presentation_id} );
+
+		// init data
+		socket.on('initdata', function(data) {
+			console.log('Init data: ' + JSON.stringify(data) );
+			if(data.id == presentation_id)
+			{
+				// go to the respective slide
+				Reveal.navigateTo(data.indexh, data.indexv);
+			}
+		});
+
+		socket.on('updatedata', function(data) {
+			console.log('Receive update data: ' + JSON.stringify(data) );
+
+			if (data.id == presentation_id) {
+				// go to the respective slide
+				Reveal.navigateTo(data.indexh, data.indexv);
+			}
+		});
+	});
 });

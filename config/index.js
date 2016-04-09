@@ -1,4 +1,6 @@
 var config = {
+	port: 3000,
+
 	// store default list of presentations
 	presentations: {
 		'demo': { // demo presentation

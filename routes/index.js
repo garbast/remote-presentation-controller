@@ -44,7 +44,7 @@ function addRoutes(presentations, app) {
 	// add the remote controller
 	app.get('/controller', function (request, response) {
 		response.render(
-			'controller',
+			'_controller',
 			{
 				layout: '../layouts/controller',
 				title: 'Remote Presentation Controller',
@@ -56,10 +56,11 @@ function addRoutes(presentations, app) {
 	// add index
 	app.get('/', function (request, response) {
 		response.render(
-			'index',
+			'_index',
 			{
 				layout: '../layouts/controller',
-				title: 'Overview'
+				title: 'Overview',
+				presentations: presentations
 			}
 		);
 	});

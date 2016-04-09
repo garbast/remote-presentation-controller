@@ -1,32 +1,26 @@
-#mainController{
-	text-align: center;
+html,
+body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
-.ctl_btn{
-	cursor: pointer;
+a {
+	color: #fff;
+	text-decoration: none;
 }
 
-#mycontrols{
-	margin-top: 20px;
-}
-
-#pptSelector{
+li {
+	list-style: none;
 	margin-bottom: 20px;
 }
 
-#pptSelector select{
-	width: 220px;
-	border: 1px solid #BBB;
-	font-size: 13px;
-	padding: 4px;
-	color: #555;
-	vertical-align: middle;
-	height: 28px;
-	line-height: 28px;
-}
-body {
+#mainController {
+	height: 100%;
+	width: 100%;
+	text-align: center;
 	position: relative;
-	padding: 0;
 	margin: 0;
 	overflow: hidden;
 
@@ -37,16 +31,42 @@ body {
 	color: #eee;
 
 	background: #1c1e20;
-	background: -moz-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%, rgba(28,30,32,1) 100%);
-	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(85,90,95,1)), color-stop(100%,rgba(28,30,32,1)));
-	background: -webkit-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-	background: -o-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-	background: -ms-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-	background: radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+	background: -moz-radial-gradient(center, ellipse cover, rgba(85, 90, 95, 1) 0%, rgba(28, 30, 32, 1) 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(85, 90, 95, 1)), color-stop(100%, rgba(28, 30, 32, 1)));
+	background: -webkit-radial-gradient(center, ellipse cover, rgba(85, 90, 95, 1) 0%, rgba(28, 30, 32, 1) 100%);
+	background: -o-radial-gradient(center, ellipse cover, rgba(85, 90, 95, 1) 0%, rgba(28, 30, 32, 1) 100%);
+	background: -ms-radial-gradient(center, ellipse cover, rgba(85, 90, 95, 1) 0%, rgba(28, 30, 32, 1) 100%);
+	background: radial-gradient(center, ellipse cover, rgba(85, 90, 95, 1) 0%, rgba(28, 30, 32, 1) 100%);
 }
 
-#fullScreenBtn{
-	display: inline-block;
+.ctl_btn {
+	cursor: pointer;
+}
+
+#mycontrols {
+	margin-top: 20px;
+}
+
+#presentationSelector {
+	margin-bottom: 20px;
+}
+
+#presentationSelector select {
+	width: 220px;
+	border: 1px solid #BBB;
+	font-size: 13px;
+	padding: 4px;
+	color: #555;
+	vertical-align: middle;
+	height: 28px;
+	line-height: 28px;
+}
+
+#fullScreenButton {
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 10px;
 	padding: 4px 10px 4px;
 	margin-bottom: 0;
 	font-size: 13px;
@@ -75,5 +95,5 @@ body {
 	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
