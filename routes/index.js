@@ -18,10 +18,10 @@ exports.setupRemotePresenter = function (app, io, config) {
 				function (config) {
 					return function (request, response) {
 						function getThemePath(config) {
-							var theme = (config['theme'] || 'main') + '.css';
+							var theme = (config['theme'] || 'black') + '.css';
 
 							if (theme.indexOf('/') < 0) {
-								theme = /css/ + theme;
+								theme = 'reveal.js/css/theme/' + theme;
 							}
 
 							return theme;
@@ -30,6 +30,7 @@ exports.setupRemotePresenter = function (app, io, config) {
 						response.render(
 							config['id'],
 							{
+								presentationId: config['id'],
 								title: config['title'],
 								theme: getThemePath(config)
 							}
@@ -90,10 +91,10 @@ exports.setupRemotePresenter = function (app, io, config) {
 					presentationConfig.indexh++;
 				}
 
+				// safe gate to prevent negative values
 				if (presentationConfig.indexh < 0) {
 					presentationConfig.indexh = 0;
 				}
-
 				if (presentationConfig.indexv < 0) {
 					presentationConfig.indexv = 0;
 				}

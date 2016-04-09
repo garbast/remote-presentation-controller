@@ -16,7 +16,7 @@ var config = {
 		'commerce_eap': { // powerpoint presentation
 			id: 'commerce_eap',
 			title: 'EXT:commerce EAP',
-			theme: 'evoweb',
+			//theme: 'css/evoweb',
 			indexh: 0,  // initial slide horizontal index
 			indexv: 0  // initial slide vertical index
 		}
