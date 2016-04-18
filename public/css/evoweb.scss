@@ -47,3 +47,28 @@ section.has-dark-background {
 // Theme template ------------------------------
 @import "../reveal.js/css/theme/template/theme";
 // ---------------------------------------------
+
+
+.reveal .small {
+  display: inline-block;
+  font-size: 0.6em;
+  line-height: 1.2em;
+  vertical-align: top;
+}
+
+.lineChart .axis path,
+.lineChart .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.lineChart .x.axis path {
+  display: none;
+}
+
+.lineChart .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1px;
+}
