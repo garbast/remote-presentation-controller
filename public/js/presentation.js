@@ -20,33 +20,38 @@ function getChartData(chart) {
 		rowLength = rows.length,
 		maxY = 0;
 
-	var columns = {x: [], y: [], cols: {}};
+	var columns = { x: [], y: [ 0 ], cols: {} };
 	for (; rowIndex < rowLength; rowIndex++) {
 		var row = rows[rowIndex],
 			cells = row.getElementsByTagName('td'),
 			cellIndex = 0,
-			cellLength = cells.length;
+			cellLength = cells.length,
+			x = 0;
+
 		for (; cellIndex < cellLength; cellIndex++) {
 			var cell = cells[cellIndex],
 				value = cell.innerHTML;
 
+			if (cellIndex > 0 && !columns.cols.hasOwnProperty((cellIndex - 1).toString())) {
+				columns.cols[cellIndex - 1] = [];
+			}
+
 			if (cellIndex === 0) {
 				columns.x.push(value);
+				x = value;
 			} else {
 				value = parseInt(value, 10);
 				maxY = maxY > value ? maxY : value;
 
-				if (!columns.cols.hasOwnProperty(cellIndex)) {
-					columns.cols[cellIndex] = [];
-				}
-
-				columns.cols[cellIndex].push(value);
+				columns.cols[cellIndex - 1].push({'x': x, 'y': value});
 			}
 		}
 	}
 
-	// @todo calc y and push to columns.y
 	var ySteps = Math.ceil(maxY / 10);
+	for (var i = 0; i < 11; i++) {
+		columns.y.push(ySteps * (1 + i));
+	}
 
 	return columns;
 }
@@ -84,77 +89,68 @@ function initBar() {
 function initializeLineCharts() {
 	function initChart(chart) {
 		var tableData = getChartData(chart);
+		// http://code.tutsplus.com/tutorials/building-a-multi-line-chart-using-d3js-part-2--cms-22973
 
-		var margin = {top: 20, right: 20, bottom: 30, left: 50},
-			width = (1200 / 2) - margin.left - margin.right,
-			height = 750 - margin.top - margin.bottom;
+		var svg = d3.select(chart),
+			margin = { top: 20, right: 20, bottom: 30, left: 60 },
+			width = (1200 * 0.65) - margin.left - margin.right,
+			height = 700 - margin.top - margin.bottom,
 
-		var x = d3.time.scale()
-			.range([0, width]);
+			// Define the scales
+			xScale = d3.scale.linear().range([margin.left, width - margin.right])
+				.domain([tableData.x[0], tableData.x[tableData.x.length - 1]]),
+			yScale = d3.scale.linear().range([height - margin.top, margin.bottom])
+				.domain([tableData.y[0], tableData.y[tableData.y.length - 1]]),
 
-		var y = d3.scale.linear()
-			.range([height, 0]);
+			// Define the axis
+			xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(tableData.x.length),
+			yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(tableData.y.length);
 
-		var xAxis = d3.svg.axis()
-			.scale(x)
-			.orient("bottom");
+		// Resize the svg
+		svg.attr('width', width + margin.left + margin.right)
+			.attr('height', height + margin.top + margin.bottom)
+			.append('g')
+			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-		var yAxis = d3.svg.axis()
-			.scale(y)
-			.orient("left");
-
-		var line = d3.svg.line()
-			.x(function(d) { return x(d.date); })
-			.y(function(d) { return y(d.close); });
-
-		var svg = d3.select(chart)
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
-			.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-		x.domain(d3.extent(tableData.x, function(d) { return d.date; }));
-		y.domain(d3.extent(tableData.y, function(d) { return d.close; }));
-
-		svg.append("g")
-			.attr("class", "x axis")
-			.attr("transform", "translate(0," + height + ")")
+		// Add x axis
+		svg.append('g')
+			.attr('class', 'x axis')
+			.attr('transform', 'translate(0,' + (height - margin.bottom + 10) + ')')
 			.call(xAxis);
 
-		svg.append("g")
-			.attr("class", "y axis")
+		// Add y axis
+		svg.append('g')
+			.attr('class', 'y axis')
+			.attr('transform', 'translate(' + margin.left + ', 0)')
 			.call(yAxis)
-			.append("text")
-			.attr("transform", "rotate(-90)")
-			.attr("y", 6)
-			.attr("dy", ".71em")
-			.style("text-anchor", "end")
-			.text("Lines");
+			.append('text')
+			.attr('transform', 'rotate(-90)')
+			.attr('y', 6)
+			.attr('dy', '.71em')
+			.style('text-anchor', 'end')
+			.text('Lines');
 
-		for (var data in tableData) {
-			if (!tableData.hasOwnProperty(data)) {
+		// Define the a line
+		var lineGen = d3.svg.line()
+			.x(function(d) { return xScale(d.x); })
+			.y(function(d) { return yScale(d.y); })
+			.interpolate('basis');
+
+		for (var dataIndex in tableData.cols) {
+			if (!tableData.cols.hasOwnProperty(dataIndex)) {
 				continue;
 			}
+			var data = tableData.cols[dataIndex];
 
-			svg.append("path")
-				.datum(data)
-				.attr("class", "line")
-				.attr("d", line);
+			svg.append('svg:path')
+				.attr('class', 'line line' + dataIndex)
+				.attr('d', lineGen(data));
 		}
 	}
 
-	var charts = d3.select('.lineChart');
-
-	for (var chartGroup in charts) {
-		if (charts.hasOwnProperty(chartGroup)) {
-			chartGroup = charts[chartGroup];
-			for (var chart in chartGroup) {
-				if (chartGroup.hasOwnProperty(chart)) {
-					initChart(chartGroup[chart]);
-				}
-			}
-		}
-	}
+	d3.selectAll('.lineChart').each(function() {
+		initChart(this);
+	});
 }
 
 function initializeDiagrams() {

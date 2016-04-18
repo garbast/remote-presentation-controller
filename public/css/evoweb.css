@@ -335,12 +335,23 @@ body {
   shape-rendering: crispEdges;
 }
 
-.lineChart .x.axis path {
-  display: none;
+.lineChart text {
+  font-size: 0.5em;
 }
 
 .lineChart .line {
   fill: none;
-  stroke: steelblue;
-  stroke-width: 1px;
+  stroke-width: 2px;
+}
+
+.lineChart .line0 {
+  stroke: red;
+}
+
+.lineChart .line1 {
+  stroke: green;
+}
+
+.lineChart .line2 {
+  stroke: blue;
 }
