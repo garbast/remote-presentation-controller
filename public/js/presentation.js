@@ -14,16 +14,27 @@ function hideMenuButtonOutsideSpeakerDeck() {
 
 function getChartData(chart) {
 	var section = chart.parentNode.parentNode.parentNode.parentNode.parentNode,
-		data = section.getElementsByClassName('data')[0],
-		rows = data.getElementsByTagName('tbody')[0].getElementsByTagName('tr'),
-		rowIndex = 0,
-		rowLength = rows.length,
-		maxY = 0;
+		elementQuery = '.' + section.className.replace(' ', '.') + ' table.data tbody tr',
+		legendRow = d3.select('.' + section.className.replace(' ', '.') + ' table.data thead tr')[0][0],
+		dataRows = d3.selectAll(elementQuery),
+		maxY = 0,
+		columns = { x: [], y: [ 0 ], columns: [], legends: [] };
 
-	var columns = { x: [], y: [ 0 ], columns: [] };
-	for (; rowIndex < rowLength; rowIndex++) {
-		var row = rows[rowIndex],
-			cells = row.getElementsByTagName('td'),
+	if (typeof legendRow === 'object') {
+		var cells = legendRow.getElementsByTagName('th'),
+			cellIndex = 1,
+			cellLength = cells.length;
+
+		for (; cellIndex < cellLength; cellIndex++) {
+			var cell = cells[cellIndex],
+				value = cell.innerHTML;
+
+			columns.legends.push(value);
+		}
+	}
+
+	dataRows[0].forEach(function(row) {
+		var cells = row.getElementsByTagName('td'),
 			cellIndex = 0,
 			cellLength = cells.length,
 			x = 0;
@@ -47,7 +58,7 @@ function getChartData(chart) {
 				columns.columns[cellIndex - 1].push({'x': x, 'y': value});
 			}
 		}
-	}
+	});
 
 	var ySteps = Math.ceil(maxY / 10);
 	for (var i = 0; i < 11; i++) {
@@ -55,36 +66,6 @@ function getChartData(chart) {
 	}
 
 	return columns;
-}
-
-function initBar() {
-	//------ code to show D3 Bar Chart on First Slide-------
-	var data = [44, 28, 15, 16, 23, 5];
-	var width = 420,
-		barHeight = 20;
-
-	var x = d3.scale.linear()
-		.domain([0, d3.max(data)])
-		.range([0, width]);
-
-	var chart = d3.select(".chart")
-		.attr("width", width)
-		.attr("height", barHeight * data.length);
-
-	var bar = chart.selectAll("g")
-		.data(data)
-		.enter().append("g")
-		.attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
-
-	bar.append("rect")
-		.attr("width", x)
-		.attr("height", barHeight - 1);
-
-	bar.append("text")
-		.attr("x", function(d) { return x(d) - 3; })
-		.attr("y", barHeight / 2)
-		.attr("dy", ".35em")
-		.text(function(d) { return d; });
 }
 
 function initializeLineCharts() {
@@ -95,6 +76,8 @@ function initializeLineCharts() {
 			margin = { top: 20, right: 20, bottom: 30, left: 60 },
 			width = (1200 * 0.65) - margin.left - margin.right,
 			height = 660 - margin.top - margin.bottom,
+
+			lSpace = width/tableData.legends.length,
 
 			// Define the scales
 			xScale = d3.scale.linear().range([margin.left, width - margin.right])
@@ -115,7 +98,7 @@ function initializeLineCharts() {
 		// Add x axis
 		svg.append('g')
 			.attr('class', 'x axis')
-			.attr('transform', 'translate(0,' + (height - margin.bottom + 10) + ')')
+			.attr('transform', 'translate(0,' + (height - margin.bottom + 8) + ')')
 			.call(xAxis);
 
 		// Add y axis
@@ -128,6 +111,7 @@ function initializeLineCharts() {
 			.append('text')
 			.attr('transform', 'rotate(-90)')
 			.attr('y', 6)
+			.attr('x', -30)
 			.attr('dy', '.71em')
 			.style('text-anchor', 'end')
 			.text('Lines');
@@ -143,6 +127,19 @@ function initializeLineCharts() {
 			svg.append('svg:path')
 				.attr('class', 'line line' + columnIndex)
 				.attr('d', lineGenerator(d));
+
+			svg.append('text')
+				.attr('x', (lSpace / 2) + columnIndex * lSpace)
+				.attr('y', 16)
+				.style('fill', 'black')
+				.text(tableData.legends[columnIndex]);
+
+			svg.append('rect')
+				.attr('class', 'line line' + columnIndex)
+				.attr('x', (lSpace / 2) + columnIndex * lSpace)
+				.attr('y', 22)
+				.attr('height', 1)
+				.attr('width', 100);
 		});
 	}
 
