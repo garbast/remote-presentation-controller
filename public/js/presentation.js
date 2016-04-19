@@ -20,7 +20,7 @@ function getChartData(chart) {
 		rowLength = rows.length,
 		maxY = 0;
 
-	var columns = { x: [], y: [ 0 ], cols: {} };
+	var columns = { x: [], y: [ 0 ], columns: [] };
 	for (; rowIndex < rowLength; rowIndex++) {
 		var row = rows[rowIndex],
 			cells = row.getElementsByTagName('td'),
@@ -32,10 +32,11 @@ function getChartData(chart) {
 			var cell = cells[cellIndex],
 				value = cell.innerHTML;
 
-			if (cellIndex > 0 && !columns.cols.hasOwnProperty((cellIndex - 1).toString())) {
-				columns.cols[cellIndex - 1] = [];
+			if (cellIndex > 0 && columns.columns.length < cellIndex) {
+				columns.columns.push([]);
 			}
 
+			// first column are x axis labels
 			if (cellIndex === 0) {
 				columns.x.push(value);
 				x = value;
@@ -43,7 +44,7 @@ function getChartData(chart) {
 				value = parseInt(value, 10);
 				maxY = maxY > value ? maxY : value;
 
-				columns.cols[cellIndex - 1].push({'x': x, 'y': value});
+				columns.columns[cellIndex - 1].push({'x': x, 'y': value});
 			}
 		}
 	}
@@ -87,14 +88,13 @@ function initBar() {
 }
 
 function initializeLineCharts() {
-	function initChart(chart) {
-		var tableData = getChartData(chart);
-		// http://code.tutsplus.com/tutorials/building-a-multi-line-chart-using-d3js-part-2--cms-22973
+	function initChart(chartElement) {
+		var tableData = getChartData(chartElement),
 
-		var svg = d3.select(chart),
+			svg = d3.select(chartElement),
 			margin = { top: 20, right: 20, bottom: 30, left: 60 },
 			width = (1200 * 0.65) - margin.left - margin.right,
-			height = 700 - margin.top - margin.bottom,
+			height = 660 - margin.top - margin.bottom,
 
 			// Define the scales
 			xScale = d3.scale.linear().range([margin.left, width - margin.right])
@@ -123,6 +123,8 @@ function initializeLineCharts() {
 			.attr('class', 'y axis')
 			.attr('transform', 'translate(' + margin.left + ', 0)')
 			.call(yAxis)
+
+			// with label
 			.append('text')
 			.attr('transform', 'rotate(-90)')
 			.attr('y', 6)
@@ -130,22 +132,18 @@ function initializeLineCharts() {
 			.style('text-anchor', 'end')
 			.text('Lines');
 
-		// Define the a line
-		var lineGen = d3.svg.line()
+		// Define the a line generator
+		var lineGenerator = d3.svg.line()
 			.x(function(d) { return xScale(d.x); })
 			.y(function(d) { return yScale(d.y); })
-			.interpolate('basis');
+			.interpolate('monotone');
 
-		for (var dataIndex in tableData.cols) {
-			if (!tableData.cols.hasOwnProperty(dataIndex)) {
-				continue;
-			}
-			var data = tableData.cols[dataIndex];
-
+		// Iterate over data and add lines
+		tableData.columns.forEach(function(d, columnIndex) {
 			svg.append('svg:path')
-				.attr('class', 'line line' + dataIndex)
-				.attr('d', lineGen(data));
-		}
+				.attr('class', 'line line' + columnIndex)
+				.attr('d', lineGenerator(d));
+		});
 	}
 
 	d3.selectAll('.lineChart').each(function() {
