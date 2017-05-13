@@ -1,40 +1,8 @@
+<div class="commerce_background"></div>
 <div class="reveal">
 
 	<!-- Any section element inside of this container is displayed as a slide -->
 	<div class="slides">
-
-		<section>
-			<table>
-				<tr>
-					<td width="40%">
-						<small>
-							<table class="data">
-								<thead>
-								<tr><th>Year</th><th colspan="2">lines</th><th>files</th></tr>
-								<tr><th></th><th>added</th><th>removed</th><th></th></tr>
-								</thead>
-								<tbody>
-								<tr><td>2007</td><td>53358</td><td>0</td><td>455</td></tr>
-								<tr><td>2008</td><td>46163</td><td>25976</td><td>250</td></tr>
-								<tr><td>2009</td><td>6920</td><td>9926</td><td>145</td></tr>
-								<tr><td>2010</td><td>3765</td><td>3518</td><td>64</td></tr>
-								<tr><td>2011</td><td>7069</td><td>13843</td><td>164</td></tr>
-								<tr><td>2012</td><td>2453</td><td>2264</td><td>41</td></tr>
-								<tr><td>2013</td><td>100</td><td>80</td><td>16</td></tr>
-								<tr><td>2014</td><td>63157</td><td>56220</td><td>837</td></tr>
-								<tr><td>2015</td><td>70773</td><td>63644</td><td>615</td></tr>
-								<tr><td>2016</td><td>109</td><td>15</td><td>11</td></tr>
-								<tr><td>EAP</td><td>39907</td><td>37042</td><td>417</td></tr>
-								</tbody>
-							</table>
-						</small>
-					</td>
-					<td width="60%">
-						<svg class="lineChart">&nbsp;</svg>
-					</td>
-				</tr>
-			</table>
-		</section>
 
 		<section>
 			<h1>Introduction and future</h1>
@@ -54,7 +22,7 @@
 				<li>Twitter: <a href="http://www.twitter.com/garbast">@garbast</a></li>
 				<li>Email: <a href="mailto:typo3@evoweb.de">typo3@evoweb.de</a></li>
 				<li>Working for <a href="https://www.marketing-factory.de/">Marketing Factory Consulting GmbH</a> since
-					5 years
+					2010
 				</li>
 			</ul>
 		</section>
@@ -63,11 +31,14 @@
 			<h2>About MFC</h2>
 
 			<ul>
-				<li>Platinum member der association</li>
+				<li>Platinum member of the TYPO3 association</li>
 				<li>Organizator and Sponsor of TYPO3Camp Essen</li>
 				<li>Sends member to the BCC</li>
 				<li>Has open positions, look at <a href="https://www.marketing-factory.de/">www.marketing-factory.de</a></li>
 			</ul>
+			<br/><br/>
+
+			<img src="images/commerce_eap/logo_marketing_factory.gif" class="plain"/>
 
 			<aside class="notes">
 				Business-Controll-Commitee
@@ -81,7 +52,10 @@
 
 			<p>The focus is only on the TYPO3 needs.</p>
 
-			<p>The shop cant be used with other systems.</p>
+			<p>The shop can't be used with other systems.</p>
+
+			<img src="images/commerce_eap/we_heart.jpg" class="plain"/>
+			<img src="images/typo3.svg" class="plain"/>
 		</section>
 
 		<section>
@@ -90,82 +64,131 @@
 			<ul>
 				<li>based on the core API</li>
 				<li>use of same database link</li>
-				<li>extendability with ext:extender</li>
-				<li>hooks every where</li>
-				<li>xclassing if realy realy needed (yuck)</li>
+				<li>extendability with EXT:extender</li>
+				<li>hooks everywhere</li>
+				<li>XCLASSing if really really needed (yuck)</li>
 			</ul>
+
+			<br/>
+			<br/>
+			<pre><code class="php" data-trim style="font-size: 18px;">
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][
+	\TYPO3\CMS\Backend\Controller\NewRecordController::class
+] = [
+	'className' => \CommerceTeam\Commerce\Xclass\NewRecordController::class,
+];
+			</code></pre>
 
 			<aside class="notes">
 				autoloading provided by the core,
-				TCA, usable in own extensions
+				TCA, usable in own extensions,
+				for those concerned no extbase
 			</aside>
 		</section>
 
 		<section>
 			<h2>... for administrators</h2>
 
-			<ul>
-				<li>only requirement is a running TYPO3</li>
-				<li>
-					no extra server/software needed
-					<ul>
-						<li>no extra database</li>
-						<li>no extra system requirements</li>
-					</ul>
-				</li>
-				<li>
-					no need of maintaining other systems
-					<ul>
-						<li>no security concerns other then TYPO3</li>
-					</ul>
-				</li>
-			</ul>
+			<table>
+				<tr>
+					<td>
+						<ul>
+							<li>only requirement is a running TYPO3</li>
+							<li>
+								no extra server/software needed
+								<ul>
+									<li>no extra database</li>
+									<li>no extra system requirements</li>
+								</ul>
+							</li>
+							<li>
+								no need of maintaining other systems
+								<ul>
+									<li>no security concerns other then TYPO3</li>
+								</ul>
+							</li>
+						</ul>
+					</td>
+					<td>
+						<img src="images/commerce_eap/mysql_tables.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
 		</section>
 
 		<section>
 			<h2>... for integrators</h2>
 
-			<ul>
-				<li>full controll with TypoScript</li>
-				<li>no external urls to configure</li>
-				<li>no api key or login hassel</li>
-				<li>business as usual for extension configuration</li>
-				<li>access controll on backend groups</li>
-			</ul>
+			<table>
+				<tr>
+					<td>
+						<ul>
+							<li>business as usual for extension configuration</li>
+							<li>full controll with TypoScript</li>
+							<li>no external urls to configure</li>
+							<li>no api key or login hassel</li>
+							<li>access control on backend groups</li>
+						</ul>
+					</td>
+					<td>
+						<img src="images/commerce_eap/typoscript.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
 		</section>
 
 		<section>
 			<h2>... for editors</h2>
 
-			<ul>
-				<li>working enviroment as with normal pages</li>
-				<li>only sees what is needed</li>
-				<li>controll off visibility like content</li>
-				<li>linkable from every link browsable field</li>
-			</ul>
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>working comparable with pages</li>
+							<li>only sees what is needed</li>
+							<li>control of visibility like content</li>
+							<li>linkable from browsable fields</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/linkbrowser.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
 
 			<aside class="notes">
-				see only categories and fields
+				sees only required categories and fields
 			</aside>
 		</section>
 
 		<section>
 			<h2>... for enduser</h2>
 
-			<ul>
-				<li>seemsless integration in the website</li>
-				<li>only needs on login</li>
-				<li>no context break while navigating between shop and content pages</li>
-			</ul>
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>seamless integration in the website</li>
+							<li>existing accounts can be used for checkout</li>
+							<li>no context break while navigating between shop and content pages</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/detailpage.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
 		</section>
 
 		<section>
 			<h2>What is it good for?</h2>
 
 			<ul>
+				<li>productcataloge and website in one system</li>
 				<li>website and shop in one system</li>
 				<li>multiple thousands of products and articles</li>
-				<lI>optimal for in content marketing</lI>
+				<lI>optimal for content marketing</lI>
 			</ul>
 		</section>
 
@@ -174,64 +197,323 @@
 
 			<ul>
 				<li>material and/or immaterial goods</li>
-				<li>catalog of various kinds</li>
+				<li>catalogues of various kinds</li>
+				<li>sales of subscriptions</li>
 				<li>booking system if extended with seat configurator</li>
 				<li>configurable products with multiple attributes</li>
-				<li>sales of subscriptions</li>
 			</ul>
 		</section>
 
-		<!-- add screenshots for each step
-			add step by step on a new slide -->
-		<section>
+		<section data-transition="none">
 			<h2>Features of commerce</h2>
 
-			<ul>
-				<li>editing directly in the backend</li>
-				<li>modules that are usable like core lists</li>
-				<li>category tree for better finding</li>
-				<li>products and articles with attributes</li>
-				<li>wizard for attribute creation</li>
-			</ul>
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>editing directly in the backend</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/edit_article.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
 
 			<aside class="notes">
 
 			</aside>
 		</section>
 
-		<section>
+		<section data-transition="none">
 			<h2>Features of commerce</h2>
 
-			<ul>
-				<li>language and currencies</li>
-				<li>all records are translatable</li>
-				<li>scaled prices</li>
-				<li>api for payment provider</li>
-			</ul>
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>editing directly in the backend</li>
+							<li>modules usable like core lists</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/modules.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
 
 			<aside class="notes">
 				rights like with pages = categories, tt_content = products
 			</aside>
 		</section>
 
-		<section>
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>editing directly in the backend</li>
+							<li>modules usable like core lists</li>
+							<li>category tree for better finding</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/searchfilter.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>editing directly in the backend</li>
+							<li>modules usable like core lists</li>
+							<li>category tree for better finding</li>
+							<li>products and articles with attributes</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/attribute.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>editing directly in the backend</li>
+							<li>modules usable like core lists</li>
+							<li>category tree for better finding</li>
+							<li>products and articles with attributes</li>
+							<li>wizard for article creation</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/article_wizard.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+
+			</aside>
+		</section>
+
+		<section data-transition="none">
 			<h2>Features of commerce</h2>
 
 			<ul>
-				<li>rights managment on categories</li>
-				<li>asign category section</li>
-				<li>full integration in link handling</li>
-				<li>
-					frontend access
-					<ul>
-						<li>prices per target group</li>
-						<lI>special products for retailer</lI>
-					</ul>
-				</li>
+				<li>localization and currencies</li>
 			</ul>
 
+			<br/>
+			<br/>
+			<pre><code class="javascript" data-trim style="font-size: 18px;">
+
+# currency used from moneylib
+plugin.tx_commerce_pi1.currency = {$plugin.tx_commerce_lib.currency}
+			</code></pre>
+
 			<aside class="notes">
-				limiting editors to only partualy categories, link wizard, link handler for typolink
+
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>localization and currencies</li>
+							<li>all records are translatable</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/localization.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>localization and currencies</li>
+							<li>all records are translatable</li>
+							<li>scaled prices</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/scale_prices.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<ul>
+				<li>localization and currencies</li>
+				<li>all records are translatable</li>
+				<li>scaled prices</li>
+				<li>api for payment provider</li>
+			</ul>
+
+			<br/>
+			<pre><code class="php" data-trim style="font-size: 18px;">
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['commerce']['SYSPRODUCTS']['PAYMENT'][
+	'types'
+]['wcp_creditcard'] = array(
+	'class' => 'Tx_Checkoutpage_Payment_Creditcard',
+	'title' => 'Wirecard Checkout Page Creditcard', 'type' => 2,
+	'provider' => array(
+		'wcp_creditcard' => array(
+			'class' => 'Tx_Checkoutpage_Provider_Creditcard',
+			'configuration' => array(
+				'orderPid' => array(
+					'paymentCaptured' => 991,
+				),
+			),
+		)
+	)
+);
+			</code></pre>
+
+			<aside class="notes">
+
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>rights management on categories</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/category_selected.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+				limiting editors to only selected categories
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>rights management on categories</li>
+							<li>assign category section</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/category_mount.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>rights management on categories</li>
+							<li>assign category section</li>
+							<li>full integration in link handling</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/linkbrowser_popup.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+				link wizard, link handler for typolink
+			</aside>
+		</section>
+
+		<section data-transition="none">
+			<h2>Features of commerce</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="55%">
+						<ul>
+							<li>rights management on categories</li>
+							<li>assign category section</li>
+							<li>full integration in link handling</li>
+							<li>
+								frontend access
+								<ul>
+									<li>all records have fe_groups support</li>
+									<li>prices per target group</li>
+									<li>special products for retailer</li>
+								</ul>
+							</li>
+						</ul>
+					</td>
+					<td width="45%">
+						<img src="images/commerce_eap/fe_groups.png" class="plain"/>
+					</td>
+				</tr>
+			</table>
+
+			<aside class="notes">
+
 			</aside>
 		</section>
 
@@ -239,57 +521,62 @@
 			<h2>Project enviroment</h2>
 
 			<ul>
-				<li>started by Marketing Factory, enet Consulting, TypoVision</li>
-				<li>since 2014 further Development by Marketing Factory</li>
-			</ul>
-		</section>
-
-		<section>
-			<h2>Numbers</h2>
-
-			<ul>
-				<li>since 2007</li>
-				<li>downloads 14,567</li>
-				<li>35.501 lines of code</li>
-				<li>103 open issues</li>
+				<li>started by Marketing Factory, enet Consulting and @work</li>
+				<li>since 2014 further development by Marketing Factory</li>
+				<li>i need to work with it daily</li>
 			</ul>
 
 			<aside class="notes">
-				32.507 in EAP
+				code quality was quite weak
 			</aside>
 		</section>
 
 		<section>
-			<small>
-				<table>
-					<tr>
-						<td width="40%">
-			<table class="data">
-				<thead>
-					<tr><th>Year</th><th colspan="2">lines</th><th>files</th></tr>
-					<tr><th></th><th>added</th><th>removed</th><th></th></tr>
-				</thead>
-				<tbody>
-					<tr><td>2007</td><td>53358</td><td></td><td>455</td></tr>
-					<tr><td>2008</td><td>46163</td><td>25976</td><td>250</td></tr>
-					<tr><td>2009</td><td>6920</td><td>9926</td><td>145</td></tr>
-					<tr><td>2010</td><td>3765</td><td>3518</td><td>64</td></tr>
-					<tr><td>2011</td><td>7069</td><td>13843</td><td>164</td></tr>
-					<tr><td>2012</td><td>2453</td><td>2264</td><td>41</td></tr>
-					<tr><td>2013</td><td>100</td><td>80</td><td>16</td></tr>
-					<tr><td>2014</td><td>63157</td><td>56220</td><td>837</td></tr>
-					<tr><td>2015</td><td>70773</td><td>63644</td><td>615</td></tr>
-					<tr><td>2016</td><td>109</td><td>15</td><td>11</td></tr>
-					<tr><td>EAP</td><td>39907</td><td>37042</td><td>417</td></tr>
-				</tbody>
+			<h2>Number crunching</h2>
+
+			<ul>
+				<li>since 2007</li>
+				<li class="fragment">downloads 14,567</li>
+				<li class="fragment">35.501 lines of code</li>
+				<li class="fragment">103 open issues</li>
+			</ul>
+
+			<aside class="notes">
+				32.507 lines of code in EAP Branch,
+				down from over 200 in 2014
+			</aside>
+		</section>
+
+		<section class="d3-chart1">
+			<h2>Activity per year</h2>
+
+			<table class="vtop">
+				<tr>
+					<td width="35%">
+						<table class="data small">
+							<thead>
+								<tr><th>Year</th><th>lines added</th><th>lines removed</th><th>files modified</th></tr>
+							</thead>
+							<tbody>
+								<tr><td>2007</td><td>53358</td><td>0</td><td>455</td></tr>
+								<tr><td>2008</td><td>46163</td><td>25976</td><td>250</td></tr>
+								<tr><td>2009</td><td>6920</td><td>9926</td><td>145</td></tr>
+								<tr><td>2010</td><td>3765</td><td>3518</td><td>64</td></tr>
+								<tr><td>2011</td><td>7069</td><td>13843</td><td>164</td></tr>
+								<tr><td>2012</td><td>2453</td><td>2264</td><td>41</td></tr>
+								<tr><td>2013</td><td>100</td><td>80</td><td>16</td></tr>
+								<tr><td>2014</td><td>63157</td><td>56220</td><td>837</td></tr>
+								<tr><td>2015</td><td>70773</td><td>63644</td><td>615</td></tr>
+								<tr><td>2016</td><td>109</td><td>15</td><td>11</td></tr>
+								<tr><td>2017</td><td>39907</td><td>37042</td><td>417</td></tr>
+							</tbody>
+						</table>
+					</td>
+					<td width="65%">
+						<svg class="lineChart">&nbsp;</svg>
+					</td>
+				</tr>
 			</table>
-						</td>
-						<td width="60%">
-							<svg class="diagram" data-type="lines">&nbsp;</svg>
-						</td>
-					</tr>
-				</table>
-			</small>
 
 			<aside class="notes">
 				240 hours in 2014 for restructure,
@@ -298,15 +585,7 @@
 		</section>
 
 		<section>
-			<h2>Current version</h2>
-
-			<iframe src="http://dev62.dev/typo3/"></iframe>
-		</section>
-
-		<section>
-			<h2>Upcoming version</h2>
-
-			<iframe src="http://dev70.dev/typo3/"></iframe>
+			<h2>Current version / Upcoming version</h2>
 		</section>
 
 		<section>
@@ -314,7 +593,7 @@
 
 			<ul>
 				<li>FAL integration</li>
-				<li>ext:fluid templates</li>
+				<li>EXT:fluid templates</li>
 				<li>statistics with google analytics</li>
 				<li>deliver with various payment provider</li>
 				<li>
@@ -330,13 +609,34 @@
 
 		<section>
 			<h2>EAP goodie</h2>
-			<h4>Support based on contribution</h4>
+			<p>Support based on contribution</p>
 
-			<ul>
-				<li></li>
-				<li></li>
-				<li></li>
-			</ul>
+			<table class="small">
+				<tr>
+					<th>Support-Paket</th>
+					<th>Backing</th>
+					<th>EAP Exclusiv access</th>
+					<th>Integration-Support</th>
+				</tr>
+				<tr>
+					<td>Bronze</td>
+					<td>5 project days</td>
+					<td>6 month</td>
+					<td>&#189; day</td>
+				</tr>
+				<tr>
+					<td>Silver</td>
+					<td>10 project days</td>
+					<td>6 month</td>
+					<td>1 day</td>
+				</tr>
+				<tr>
+					<td>Gold</td>
+					<td>15 project days</td>
+					<td>6 month</td>
+					<td>3 days</td>
+				</tr>
+			</table>
 		</section>
 
 		<section>
@@ -382,5 +682,10 @@
 		</section>
 
 	</div>
+
+	<footer>
+		<span class="pull-left">E-Commerce in TYPO3 with EXT:commerce - Introduction and future</span>
+		<span class="pull-right">Sebastian Fischer @garbast about #t3commerce</span>
+	</footer>
 
 </div>
