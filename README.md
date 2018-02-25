@@ -13,9 +13,13 @@ Presenter can use their mobile devices to control the slides via the controller 
 
 2) Run
 
+npm install
+
+3) Run
+
 node app.js
 
-3) Preloaded with 2 sample presentations:
+4) Preloaded with 2 sample presentations:
 
 - [http://localhost:3000/demo](http://localhost:3000/demo) : Demo presentation from <http://lab.hakim.se/reveal-js>
 - <http://localhost:3000/myppt>
@@ -40,3 +44,4 @@ To remote control, just use the dropdown to select which presentation to control
 
 
 
+Based on https://github.com/FeignMan/reveal-remotely
