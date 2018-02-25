@@ -2,9 +2,14 @@
   "name": "application-name",
   "version": "0.0.1",
   "private": true,
+
   "dependencies": {
     "ejs": ">= 0.0.1",
     "express": "^2.5.8",
     "socket.io": "2.0.4"
+  },
+
+  "scripts": {
+    "postinstall": "mkdir public/reveal.js; git clone git@github.com:hakimel/reveal.js.git public/reveal.js"
   }
 }

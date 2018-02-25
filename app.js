@@ -11,19 +11,17 @@ const app = module.exports = express.createServer();
 
 
 // socket io
-const io = require('socket.io')(
-    app,
-    {
-        'log level': 1,
-        'transports': [
-            'websocket',
-            'flashsocket',
-            'htmlfile',
-            'xhr-polling',
-            'jsonp-polling'
-        ]
-    }
-);
+const io = require('socket.io')(app);
+io.set({
+    'log level': 1,
+    'transports': [
+        'websocket',
+        'flashsocket',
+        'htmlfile',
+        'xhr-polling',
+        'jsonp-polling'
+    ]
+});
 
 // configure express
 app.configure(function () {
