@@ -1,4 +1,4 @@
-var config = {
+const config = {
 	port: 3000,
 
 	// store default list of presentations
