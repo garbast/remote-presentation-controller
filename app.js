@@ -23,6 +23,7 @@ io.set({
     ]
 });
 
+
 // configure express
 app.configure(function () {
     app.set('views', __dirname + '/presentations');
@@ -50,4 +51,4 @@ routes.setupRemotePresenter(app, io, config);
 
 
 app.listen(config.port);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+console.log('Express server listening on port %d in %s mode', app.address().port, app.settings.env);

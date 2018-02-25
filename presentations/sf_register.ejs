@@ -1,0 +1,357 @@
+<div class="sf_register_background"></div>
+<div class="reveal">
+
+	<!-- Any section element inside of this container is displayed as a slide -->
+	<div class="slides">
+
+		<section>
+			<h1>TYPO3 Frontend User Registrierung mit EXT:sf_register</h1>
+
+			<h3>Einführung und Konfiguration</h3>
+
+			<p>
+				<small>Sebastian Fischer / <a href="http://www.twitter.com/garbast">@garbast</a></small>
+			</p>
+		</section>
+
+		<section data-markdown>
+			## Was ist Frontend User Registrierung
+
+			Es handelt sich um einen Prozess der einem Webseitennutzer
+			Mittel bereitstellt einen Datensatz anzulegen,
+			der als für die Bereitstellung weitere Funktion der Website
+			verwendet werden kann.
+		</section>
+
+		<section data-markdown>
+			## Mögliche Funktionen
+
+			* Login für zugriffsbeschränkte Information
+			* Registrierung an einem Newsletter
+			* Push Benachrichtigung bei Inhaltsveränderunge
+		</section>
+
+		<section data-markdown>
+			## Abgrenzung
+
+			* Stellt keine "Passwort vergessen"-Funktion bereit
+			  (wird bereits von felogin erfüllt)
+			* Beinhaltet keine "Account Löschen"-Funktion
+
+			* Stellt keine Nutzungsstatistik gemäß DSGVO bereit
+		</section>
+
+		<section data-markdown>
+			## Features / Templating
+
+			Dank Fluid Einsatz können die Pfade wie gewohnt angepasst werden
+
+			* TemplateRootPaths
+			* LayoutRootPaths
+			* PartialRootPaths
+		</section>
+
+		<section data-markdown>
+			## Features / Templating
+
+			Die Formulare sind mit den Bootstrap CSS Class formatiert
+
+			* formerrors
+			* form-group
+			* form-control
+			* btn btn-primary
+		</section>
+
+		<section data-markdown>
+			## Features / Templating
+
+			Durch Fluid ermöglichte Anpassbarkeit
+
+			* vollständig abgegrenzte Templates je Aufgabe
+			* Invite / Create / Edit / Password habe jeweils eigene Templates
+			* Integration eigenen ViewHelpern zur Anpassung der Formulare
+		</section>
+
+		<section>
+			<h2>Features / TypoScript</h2>
+
+			<div>
+				<p>Je Bereich und Feld können Validatoren konfiguriert werden</p>
+
+				<pre class="javascript"><code>plugin.tx_sfregister.settings.validation {
+  create {
+    snapchat {
+      # steuert zusätzlich die Ausgabe des *-Zeichen an Pflichtfeldern
+      1 = Evoweb\SfRegister\Validation\Validator\RequiredValidator
+      2 = StringLength(minimum = 3, maximum = 15)
+      2 = YourVendor\YourKey\Validation\Validator\SnapchatValidator
+    }
+    einzeln = Evoweb\SfRegister\Validation\Validator\RequiredValidator
+  }
+  edit {}
+  password {}
+}</code></pre>
+			</div>
+		</section>
+
+		<section>
+			<h2>Features / Model Erweiterung</h2>
+
+			<div>
+				<p>Das User Model kann um eigene Felder erweitert werden</p>
+
+				<p>ext_localconf.php</p>
+				<pre class="php"><code>$extension = 'ew_sfregister_extended';
+$model = \Evoweb\SfRegister\Domain\Model\FrontendUser::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sf_register']['extender'][$model][$extension] =
+	'EXT:ew_sfregister_extended/Classes/Domain/Model/FrontendUser.php';</code></pre>
+			</div>
+		</section>
+
+		<section>
+			<h2>Features / Model Erweiterung</h2>
+
+			<div>
+				<p>Das User Model kann um eigene Felder erweitert werden</p>
+
+				<p>ext_localconf.sql</p>
+				<pre class="sql"><code>#
+# Table structure for table 'fe_users'
+#
+CREATE TABLE fe_users (
+	snapchat varchar(15) DEFAULT ''
+);</code></pre>
+			</div>
+		</section>
+
+		<section>
+			<h2>Features / Model Erweiterung</h2>
+
+			<div>
+				<p>Das User Model kann um eigene Felder erweitert werden</p>
+
+				<p>ew_sfregister_extended/Configuration/TCA/Overrides/fe_users.php</p>
+				<pre class="php"><code>$temporaryColumns = array(
+	'snapchat' => array(
+		'label' => 'LLL:EXT:ew_sfregister_extended/Resources/Private/Language/locallang_be.xml:snapchat',
+		'config' => array(
+			'type' => 'input',
+		)
+	),
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+	'fe_users',
+	$temporaryColumns
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+	'fe_users',
+	'snapchat'
+);</code></pre>
+			</div>
+		</section>
+
+		<section>
+			<h2>Features / Model Erweiterung</h2>
+
+			<div>
+				<p>Das User Model kann um eigene Felder erweitert werden</p>
+
+				<p>ew_sfregister_extended/Classes/Domain/Model/FrontendUser.php</p>
+				<pre class="php"><code>class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
+	/**
+	 * @var string
+	 */
+	protected $snapchat = '';
+	/**
+	 * @return string
+	 */
+	public function getSnapchat() {
+		return $this->snapchat;
+	}
+	/**
+	 * @return string
+	 */
+	public function setSnapchat($snapchat) {
+		$this->snapchat = $snapchat;
+	}
+};</code></pre>
+			</div>
+		</section>
+
+		<section data-markdown>
+			## Features / Bestätigungsschritte der Registrierung
+
+			* Bestätigung des Double OptIns
+			* Ablehnen des Double OptIns
+			* Benachrichtigung des Administrators über Akzeptieren der OptIns
+			* Bestätigung der Registrierung durch den Administrator
+			* Ablehnen der Registrierung durch den Administrator
+			* Benachrichtigung des Nutzers Über Akzeptieren der Bestätigung
+			* Austauschbare Reihenfolge
+		</section>
+
+		<section data-markdown>
+			## Features / Bestätigungsschritte bei Bearbeitung
+
+			* Bestätigung der Änderung durch den Nutzer
+			* Akzeptieren der Änderung durch den Administrator
+		</section>
+
+		<section>
+			<h2>Installation</h2>
+
+			<div>
+				Via Composer:<br>
+				<pre><code>composer require evoweb/sf-register</code></pre>
+				(Dran denken, die Extension im ExtensionManager zu aktivieren.)<br>
+			</div>
+
+			<p>
+				Via ExtensionManager:<br>
+				Nach sf_register suchen und hinzufügen anklicken
+			</p>
+		</section>
+
+		<section>
+			<h2>Installation</h2>
+
+			<div data-highlight-theme="obsidian">
+				<p>Als neues Projekt:</p>
+				<p>composer.json</p>
+				<pre class="json"><code>{
+	"name": "evoweb/project-with-sf_register",
+	"description": "Project with preinstsalled Frontend User Registration",
+	"require": {
+		"typo3/cms-core": "^8.7.0",
+		"bk2k/bootstrap-package": "^9.1.0",
+		"evoweb/sf-register": "^8.8.0",
+		"evoweb/recaptcha": "^8.2.0",
+		"evoweb/extender": "^6.4.0"
+	},
+	"extra": {
+		"typo3/cms": {
+			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"web-dir": "web"
+		}
+	}
+}</code></pre>
+			</div>
+		</section>
+
+		<section data-markdown>
+			## Installation
+
+			Aktivieren der Extension im Extension Manager
+			![extension_manager](images/sf_register/extension_manager.png)
+		</section>
+
+		<section data-markdown>
+			## Konfiguration
+
+			Auswahl des statischen TypoScripts im Template
+			![typoscript](images/sf_register/typoscript.png)
+		</section>
+
+		<section data-markdown class="img430">
+			## Konfiguration
+
+			* Anlage eines Datenordners in dem die Nutzer angelegt werden sollen
+			  * Anlegen einer Nutzergruppe für vor der Bestätigung
+			  * Anlegen einer Nutzergruppe für nach der Bestätigung
+			* Anlage einer Seite auf der die Registrierung durchgeführt wird
+			* Hinzufügen eines Inhaltselements
+		</section>
+
+		<section>
+			<h2>Konfiguration</h2>
+
+			<div data-highlight-theme="obsidian">
+				<p>Einstellen der Nutzergruppen die nach Speichern und Bestätigen zugewiesen werden sollen.</p>
+				<p>composer.json</p>
+				<pre class="json"><code># Wird auf Development Servern gebraucht um das Captcha ausgegeben zu bekommen
+plugin.tx_recaptcha.enforceCaptcha = 1
+
+plugin.tx_sfregister.settings.usergroupPostSave = 1
+plugin.tx_sfregister.settings.usergroupPostConfirm = 2</code></pre>
+			</div>
+		</section>
+
+		<section data-markdown class="img430">
+			## Konfiguration
+
+			* Hinzufügen eines Inhaltselements
+
+			![typoscript](images/sf_register/content.png)
+		</section>
+
+		<section data-markdown>
+			## Auswahl von Feldern
+
+			Um nur definierte Felder auszugeben können diese ausgewählt werden.
+
+			![typoscript](images/sf_register/fields.png)
+		</section>
+
+		<section data-markdown>
+			## Auswahl von Feldern
+
+			Feld Validatoren werden immer ausgeführt. Egal ob ein Feld ausgegeben wird
+			oder nicht ändert nichts am Validierungsverhalten. Deshalb müssen alle
+			Felder ausgewählt werden die eine Fehlermeldung auslösen können.
+		</section>
+
+		<section data-markdown>
+			## Ausgabe
+
+			Das bisherige Ergebnis führt zu folgender Ausgabe.
+
+			![typoscript](images/sf_register/frontend_form.png)
+		</section>
+
+		<section data-markdown>
+			## Ausgabe
+
+			Bei zusätzlich ausgewähltem Captcha erhält man
+
+			![typoscript](images/sf_register/frontend_captcha.png)
+		</section>
+
+		<section data-markdown>
+			## Ergänzen weiterer Felder
+
+			Mittels TypoScript können eigene Felder hinzugefügt werden. Damit diese
+			in Inhaltselementen ausgewählt werden können müssen sie in einem der
+			folgenden Bereiche hinzugefügt werden.
+
+			* plugin.tx_sfregister.settings.fields.createDefaultSelected
+			* plugin.tx_sfregister.settings.fields.editDefaultSelected
+			* plugin.tx_sfregister.settings.fields.inviteDefaultSelected
+
+			z.B.:
+
+			plugin.tx_sfregister.settings.fields.createDefaultSelected.255 = snapchat
+			plugin.tx_sfregister.settings.fields.configuration.snapchat.partial = Textfield
+		</section>
+
+		<section data-markdown>
+			## Links
+
+			* [Dokumentation](docu)
+			* [Packagist](packagist)
+			* [Git Repository](repository)
+			* [Issues Tracker](issues)
+
+			[docu]: https://docs.typo3.org/typo3cms/extensions/sf_register/
+			[packagist]: https://packagist.org/packages/evoweb/sf-register
+			[repository]: https://github.com/evoweb/sf_register
+			[issues]: https://github.com/evoweb/sf_register/issues
+		</section>
+
+	</div>
+
+	<footer>
+		<span class="pull-left">TYPO3 Frontend User Registration</span>
+		<span class="pull-right">Sebastian Fischer @garbast about EXT:sf_register</span>
+	</footer>
+
+</div>

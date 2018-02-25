@@ -10,15 +10,15 @@
  */
 function addRoutes(presentations, app) {
 	// add presentations to routing
-	var presentationConfig = {};
-	for (var presentation in presentations) {
+	let presentationConfig = {};
+	for (let presentation in presentations) {
 		if (presentations.hasOwnProperty(presentation)) {
 			presentationConfig = presentations[presentation];
 
 			app.get('/' + presentationConfig['id'], function (config) {
 				return function (request, response) {
 					function getThemePath(config) {
-						var theme = (config['theme'] || 'black') + '.css';
+						let theme = (config['theme'] || 'black') + '.css';
 
 						if (theme.indexOf('/') < 0) {
 							theme = 'reveal.js/css/theme/' + theme;
@@ -89,23 +89,23 @@ function setupRemoteController(presentations, io) {
 			console.log('receive command ' + JSON.stringify(command));
 			// TODO: future might need a way to tell how many slides there are
 			// presentation id
-			var presentationId = command['id'];
+            let presentationId = command['id'];
 			// command can be 'up', 'down', 'left', 'right'
-			var cmd = command['txt'];
+            let cmd = command['txt'];
 
 			if (presentations[presentationId]) {
-				var presentationConfig = presentations[presentationId];
+                let presentationConfig = presentations[presentationId];
 				// update ppt information
-				if (cmd == 'up') {
+				if (cmd === 'up') {
 					presentationConfig.indexv--;
 				}
-				else if (cmd == 'down') {
+				else if (cmd === 'down') {
 					presentationConfig.indexv++;
 				}
-				else if (cmd == 'left') {
+				else if (cmd === 'left') {
 					presentationConfig.indexh--;
 				}
-				else if (cmd == 'right') {
+				else if (cmd === 'right') {
 					presentationConfig.indexh++;
 				}
 
