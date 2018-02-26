@@ -159,7 +159,7 @@ Reveal.initialize({
 	progress: true,
 	history: true,
 	center: false,
-	slideNumber: true,
+	slideNumber: 'c/t',
 
 	width: 1200,
 	height: 750,

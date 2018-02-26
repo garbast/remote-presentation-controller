@@ -19,7 +19,6 @@ section.has-dark-background h6 {
  * GLOBAL STYLES
  *********************************************/
 body {
-	background: #fff;
 	background-color: #fff;
 }
 
@@ -382,6 +381,10 @@ body {
 	padding: 10px 0 0 0;
 }
 
+footer .pull-right {
+	margin-right: 45px;
+}
+
 .reveal .hidden {
 	display: none;
 }
@@ -395,6 +398,11 @@ body {
 
 .reveal table.vtop td {
 	vertical-align: top;
+}
+
+.reveal .slide-number {
+	right: 35px;
+	bottom: 10px;
 }
 
 .iframeLarge {
