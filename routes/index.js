@@ -1,3 +1,5 @@
+/* globals exports, JSON, console */
+
 // store list of presentations which include what is the title and its current slide
 // default to 2 presentations, demo & my presentation
 // the list is loaded from config file under config/index.js
@@ -5,8 +7,9 @@
 /**
  * Add presentations and controller to path mapping
  *
- * @param {object} presentations
- * @param {object} app
+ * @param presentations
+ * @param presentations.hasOwnProperty
+ * @param app
  */
 function addRoutes(presentations, app) {
 	// add presentations to routing
@@ -70,8 +73,10 @@ function addRoutes(presentations, app) {
  * setup remote control here
  * socket.io setup
  *
- * @param {object} presentations
- * @param {object} io
+ * @param presentations
+ * @param io
+ * @param io.sockets
+ * @param io.sockets.broadcast
  */
 function setupRemoteController(presentations, io) {
 	io.sockets.on('connection', function (socket) {
@@ -89,12 +94,12 @@ function setupRemoteController(presentations, io) {
 			console.log('receive command ' + JSON.stringify(command));
 			// TODO: future might need a way to tell how many slides there are
 			// presentation id
-            let presentationId = command['id'];
+			let presentationId = command['id'];
 			// command can be 'up', 'down', 'left', 'right'
-            let cmd = command['txt'];
+			let cmd = command['txt'];
 
 			if (presentations[presentationId]) {
-                let presentationConfig = presentations[presentationId];
+				let presentationConfig = presentations[presentationId];
 				// update ppt information
 				if (cmd === 'up') {
 					presentationConfig.indexv--;
@@ -127,9 +132,9 @@ function setupRemoteController(presentations, io) {
 }
 
 /**
- * @param {object} app
- * @param {object} io
- * @param {object} config
+ * @param app
+ * @param io
+ * @param config
  */
 exports.setupRemotePresenter = function (app, io, config) {
 	addRoutes(config.presentations, app);
